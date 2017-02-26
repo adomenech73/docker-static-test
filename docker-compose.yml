@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  sonarqube:
+    image: adomenech73/sonarqube
+#    build: build/sonarqube
+    volumes:
+      - sonarqube-volume:/opt/sonarqube
+    ports:
+      - 9000:9000
+      - 9092:9092
+#    environment:
+#      - VIRTUAL_HOST=sonarqube.local
+#      - SONARQUBE_JDBC_USERNAME="sonar"
+#      - SONARQUBE_JDBC_PASSWORD=sonar
+#      - SONARQUBE_JDBC_URL="jdbc:postgresql://localhost/sonar"
+
+  sonarqube-scanner:
+    image: adomenech73/sonarqube-scanner
+#    build: build/sonar-runner
+    depends_on:
+      - sonarqube
+    environment:
+
+      - "PROJECT_KEY=botpress-sp-postgres"
+      - "PROJECT_NAME=Bootpress sp-postgres"
+      - "SOURCE=https://github.com/botpress/botpress"
+#      - "SORCE_BRANCH=sp-postgres"
+
+volumes:
+  sonarqube-volume:
